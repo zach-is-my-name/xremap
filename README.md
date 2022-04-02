@@ -243,6 +243,29 @@ swaymsg -t get_tree
 
 Locate `app_id` in the output.
 
+### **Important Note**
+  **Xremap listens to events and rewrites them, so it needs to be run as a daemon.** In systems running systemd you can manage an xremap process using systemd and start that using an XDG autostart script (`systemctl --user enable xremap` starts that too early, hence the additional autostart script).
+#### Systemd Example
+  Add the follow two files:
+ 
+`# ~/.config/systemd/user/xremap.service`
+  ```
+[Unit]
+Description=xremap
+
+[Service]
+Restart=always
+ExecStart=xremap ~/config/xremap.yml --watch
+```
+`~/.config/autostart/xremap.desktop`
+```
+[Desktop Entry]
+Name=Xremap
+Type=Application
+Exec=systemctl --user start xremap
+Terminal=false
+  ```
+This loads the script on each startup so that it runs continuously.   
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
